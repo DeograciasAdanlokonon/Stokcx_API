@@ -2,8 +2,8 @@ from flask import Flask, jsonify, request, render_template
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
-import os
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Initialize our API via FLASK app
 app = Flask(__name__)
@@ -21,7 +21,8 @@ def stockx_search(reference):
     options.add_argument("--disable-gpu")  # Disable GPU (often unnecessary in headless)
     options.add_argument("--disable-extensions")  # Avoid issues with extensions
 
-    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options )
 
     # # keep Chrome browser open after program finishes
     # chrome_options = webdriver.ChromeOptions()
@@ -85,5 +86,5 @@ def api_core():
 
 if __name__ == "__main__":
     # run app in debug mode to auto-load our server
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    app.run(debug=True, host='0.0.0.0')
 

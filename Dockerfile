@@ -1,3 +1,15 @@
-RUN apt-get install -y wget curl unzip fontconfig locales \
-    libxrender1 libxss1 libxtst6 libnss3 libgconf-2-4 libgbm1 \
-    libasound2 libx11-xcb1 libxshmfence1
+FROM python:3.10
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install --trusted-host pypi.install.org -r requirements.txt
+
+RUN apt-get update && apt-get install -y wget unzip && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    rm google-chrome-stable_current_amd64.deb && \
+    apt-get clean
+
+CMD ["python", "main.py"]

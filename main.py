@@ -14,20 +14,20 @@ def stockx_search(reference):
 
     url = f"https://stockx.com/search?s={reference}"
 
-    # options = Options()
-    # options.add_argument("--headless")  # Run in headless mode
-    # options.add_argument("--no-sandbox")  # Required in some environments
-    # options.add_argument("--disable-dev-shm-usage")  # Avoid /dev/shm issues
-    # options.add_argument("--disable-gpu")  # Disable GPU (often unnecessary in headless)
-    # options.add_argument("--disable-extensions")  # Avoid issues with extensions
+    options = Options()
+    options.add_argument("--headless")  # Run in headless mode
+    options.add_argument("--no-sandbox")  # Required in some environments
+    options.add_argument("--disable-dev-shm-usage")  # Avoid /dev/shm issues
+    options.add_argument("--disable-gpu")  # Disable GPU (often unnecessary in headless)
+    options.add_argument("--disable-extensions")  # Avoid issues with extensions
+
+    driver = webdriver.Chrome(options=options)
+
+    # # keep Chrome browser open after program finishes
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_experimental_option("detach", True)
     #
-    # chrome_options = webdriver.Chrome(options=options)
-
-    # keep Chrome browser open after program finishes
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_experimental_option("detach", True)
-
-    driver = webdriver.Chrome(options=chrome_options)
+    # driver = webdriver.Chrome(options=chrome_options)
     driver.get(url=url)
 
     # fetch for the first article

@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: stockx-search
+    command: python main.py
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/main

@@ -21,8 +21,8 @@ def stockx_search(reference):
     options.add_argument("--disable-gpu")  # Disable GPU (often unnecessary in headless)
     options.add_argument("--disable-extensions")  # Avoid issues with extensions
 
-    # driver = webdriver.Chrome(options=options)
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options )
+    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     # # keep Chrome browser open after program finishes
     # chrome_options = webdriver.ChromeOptions()

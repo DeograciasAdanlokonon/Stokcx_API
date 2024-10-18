@@ -62,9 +62,9 @@ def api_core():
     try:
         if request.method == 'POST':
             reference = request.form.get('reference')
-            if reference:
+            if not reference == "":
                 result = stockx_search(reference)
-                if result:
+                if not result == "":
                     response = make_response(jsonify({"response": {"result": result}}), 200)
                     response.headers[
                         'Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
@@ -72,6 +72,7 @@ def api_core():
                     response.headers['Expires'] = '0'
                     return response
                 else:
+                    # let inform no result found
                     return jsonify({"response": {"result": "No result found for this reference on Stockx.com"}})
             else:
                 return jsonify({"response": {"error": "No product reference provided."}}), 404

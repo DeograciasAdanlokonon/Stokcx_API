@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, make_response
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -22,13 +22,6 @@ def stockx_search(reference):
     options.add_argument("--disable-extensions")  # Avoid issues with extensions
 
     driver = webdriver.Chrome(options=options)
-    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
-    # # keep Chrome browser open after program finishes
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_experimental_option("detach", True)
-    #
-    # driver = webdriver.Chrome(options=chrome_options)
     driver.get(url=url)
 
     # fetch for the first article
@@ -69,12 +62,16 @@ def api_core():
     try:
         if request.method == 'POST':
             reference = request.form.get('reference')
-            if not reference == "":
+            if reference:
                 result = stockx_search(reference)
-                if not result == "":
-                    return jsonify({"response": {"result": result}}), 200
+                if result:
+                    response = make_response(jsonify({"response": {"result": result}}), 200)
+                    response.headers[
+                        'Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+                    response.headers['Pragma'] = 'no-cache'
+                    response.headers['Expires'] = '0'
+                    return response
                 else:
-                    # let inform no result found
                     return jsonify({"response": {"result": "No result found for this reference on Stockx.com"}})
             else:
                 return jsonify({"response": {"error": "No product reference provided."}}), 404
